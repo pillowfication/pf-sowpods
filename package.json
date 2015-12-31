@@ -2,18 +2,22 @@
   "name": "pf-sowpods",
   "version": "1.0.0",
   "description": "Scrabble's SOWPODS dictionary",
-  "author": "Markus Tran <thebluepillow@gmail.com>",
-  "main": "index.js",
-  "scripts": {},
+  "author": {
+    "name": "Markus Tran",
+    "email": "thebluepillow@gmail.com",
+    "url": "http://pillowfication.com"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pillowfication/pf-sowpods"
+    "url": "git://github.com/pillowfication/pf-sowpods.git"
   },
   "bugs": {
     "url": "https://github.com/pillowfication/pf-sowpods/issues"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "main": "index.js",
+  "devDependencies": {
+    "eslint-config-pf": "*"
+  },
   "keywords": [
     "pillow",
     "scrabble",

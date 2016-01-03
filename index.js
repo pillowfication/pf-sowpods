@@ -1,18 +1,16 @@
 'use strict';
 
-var fs = require('fs');
-
-var dictionary = fs.readFileSync(__dirname+'/sowpods.txt').toString().split('\n');
+var sowpods = require('./sowpods');
 var undefined;
 
-module.exports = dictionary;
+module.exports = sowpods;
 
 module.exports.verify = function(word) {
   word = word.toUpperCase();
-  var min = 0, max = dictionary.length-1, mid;
+  var min = 0, max = sowpods.length-1, mid;
   while (min <= max) {
     mid = min + max >> 1;
-    switch (word.localeCompare(dictionary[mid])) {
+    switch (word.localeCompare(sowpods[mid])) {
       case -1: max = mid - 1; break;
       case  1: min = mid + 1; break;
       case  0: return true;
@@ -23,10 +21,10 @@ module.exports.verify = function(word) {
 
 module.exports.random = function(count) {
   if (count === undefined)
-    return dictionary[dictionary.length*Math.random()|0];
+    return sowpods[sowpods.length*Math.random()|0];
   if (!count)
     return [];
-  var copy = dictionary.slice(), index = dictionary.length, stop = index - count, swap, temp;
+  var copy = sowpods.slice(), index = sowpods.length, stop = index - count, swap, temp;
   while (index > stop && --index) {
     swap = (index + 1)*Math.random()|0;
     temp = copy[index];

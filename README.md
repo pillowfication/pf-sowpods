@@ -7,8 +7,8 @@
 ```javascript
 // Require the module to use it.
 var sowpods = require('pf-sowpods');
-sowpods[42]; // 'ABAPICAL'
-sowpods.length; // 267752
+sowpods[62]; // 'ABAPICAL'
+sowpods.length; // 267751
 
 // Verify words
 sowpods.verify('banana'); // true
@@ -22,13 +22,20 @@ sowpods.define('set');
 sowpods.suggest('puth');
 // {TODO}
 
+// Find anagrams out of letters
+sowpods.anagram('EYBTOR*');
+// {TODO}
+// Get all 2-letter words
+sowpods.anagram('**')
+// {TODO}
+
 // Get random words
 sowpods.random(); // 'PICANINNIES'
 sowpods.random(2); // ['REFRESHENS', 'EPILOGUIZING']
 
-// Get all 2-letter words
+// Get all 5-letter words
 sowpods.filter(function(word) {
-  return word.length === 2;
+  return word.length === 5;
 });
 
 // Get all words with 'Q'

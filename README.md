@@ -5,10 +5,27 @@
 ## Examples
 
 ```javascript
-// Require the module to use it.
+// Require the module to use it
 var sowpods = require('pf-sowpods');
-sowpods[62]; // 'ABAPICAL'
+sowpods[62];    // 'ABAPICAL'
 sowpods.length; // 267751
+
+// A trie structure is included, too
+sowpods.trie.H.A.P.H.T.A.R.A._; // true
+JSON.stringify(sowpods.trie.D.E.R.M.I, null, 2)
+// {
+//   "C": {
+//     "_": true
+//   },
+//   "S": {
+//     "_": true,
+//     "E": {
+//       "S": {
+//         "_": true
+//       }
+//     }
+//   }
+// }
 
 // Verify words
 sowpods.verify('banana'); // true
@@ -30,7 +47,7 @@ sowpods.anagram('**')
 // {TODO}
 
 // Get random words
-sowpods.random(); // 'PICANINNIES'
+sowpods.random();  // 'PICANINNIES'
 sowpods.random(2); // ['REFRESHENS', 'EPILOGUIZING']
 
 // Get all 5-letter words
@@ -49,6 +66,10 @@ sowpods.filter(function(word) {
 ### sowpods (Array)
 
 An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
+
+### sowpods.trie (Object)
+
+A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word.
 
 ### sowpods.verify(word)
 

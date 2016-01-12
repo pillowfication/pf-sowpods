@@ -40,11 +40,9 @@ sowpods.suggest('puth');
 // {TODO}
 
 // Find anagrams out of letters
-sowpods.anagram('EYBTOR*');
-// {TODO}
+sowpods.anagram('EYBTOR*'); // [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
 // Get all 2-letter words
-sowpods.anagram('**')
-// {TODO}
+sowpods.anagram('**')       // [ 'AA', 'AB', ..., 'ZA', 'ZO' ]
 
 // Get random words
 sowpods.random();  // 'PICANINNIES'
@@ -69,15 +67,28 @@ An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
 
 ### sowpods.trie (Object)
 
-A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word.
+A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word. Lodash's `get()` function may be useful here
+
+```javascript
+var _ = require('lodash');
+var subTrie = _.get(sowpods.trie, 'A.B.C.D', {});
+```
 
 ### sowpods.verify(word)
 
  * **word** (String) - A word to check (case-insensitive)
  * **returns** (Boolean) - `true` if the word is in SOWPODS
 
-This function performs a binary search to test if the word exists in the array.
-Note: `Math.log(sowpods.length, 2) == 12.497816457936626`
+This function crawls the trie to determine if the word exists.
+
+### sowpods.anagram(str)
+
+ * **str** (String) - The letters to anagram (case-insensitive)
+ * **returns** (Array) - All possible single word anagrams
+
+`str` may contain `*` or `?` which both indicate a wildcard.
+
+This function recursively permutes the string while crawling the trie to determine if the current permutation is valid or is a word. Please note that using many wildcards will heavily slow down the algorithm.
 
 ### sowpods.random(count)
 

@@ -25,5 +25,9 @@
     "dictionary",
     "sowpods"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "0.20.0",
+    "superagent": "1.8.1"
+  }
 }

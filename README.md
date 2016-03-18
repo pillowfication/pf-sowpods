@@ -12,18 +12,13 @@ sowpods.length; // 267751
 
 // A trie structure is included, too
 sowpods.trie.H.A.P.H.T.A.R.A._; // true
-JSON.stringify(sowpods.trie.D.E.R.M.I, null, 2)
+
+var _ = require('lodash');
+_.get(sowpods.trie, 'DERMI'.split());
 // {
-//   "C": {
-//     "_": true
-//   },
-//   "S": {
-//     "_": true,
-//     "E": {
-//       "S": {
-//         "_": true
-//       }
-//     }
+//   C: { _: true },
+//   S: { _: true,
+//     E: { S: { _: true } }
 //   }
 // }
 
@@ -32,8 +27,16 @@ sowpods.verify('banana'); // true
 sowpods.verify('foobar'); // false
 
 // Define words / get related word forms
-sowpods.define('set');
-// {TODO}
+sowpods.define('moo', function(err, data) {
+  if (!err) {
+    console.log(data);
+  }
+});
+// {
+//   word: 'MOO',
+//   definition: 'to make the deep, moaning sound of a cow',
+//   related: [ 'MOOED', 'MOOING', 'MOOS' ]
+// }
 
 // Suggest words
 sowpods.suggest('puth');

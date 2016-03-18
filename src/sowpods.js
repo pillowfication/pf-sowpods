@@ -1,5 +1,7 @@
 'use strict';
 
+var request = require('superagent');
+var cheerio = require('cheerio');
 var dictionary = require('./dictionary');
 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var undefined;
@@ -29,6 +31,7 @@ module.exports.verify = function(word) {
 module.exports.anagram = function(str) {
   str = str.toUpperCase();
   var l = str.length;
+
   function check(index, trie, node, input, seq) {
     var i, result = [];
     // Avoid retracing
@@ -85,9 +88,46 @@ module.exports.random = function(count) {
   return copy.slice(-count);
 };
 
-// Make REST call to Scrabble.com for this?
 module.exports.define = function(word, cb) {
-  setImmediate(cb, null, word);
+  if (!/^[a-zA-Z]+$/.test(word)) {
+    setImmediate(cb, '`word` must be an alphabetic string', null);
+    return;
+  }
+
+  request
+    .post('http://scrabble.hasbro.com/en-us/tools#dictionary')
+    .type('application/x-www-form-urlencoded')
+    .send('dictWord=' + word.toLowerCase())
+    .end(function(err, res) {
+      if (err) {
+        cb(err, null);
+        return;
+      }
+
+      var html = cheerio.load(res.text)('.word-definition').html();
+
+      // If not a valid Scrabble word, OOPS! is returned
+      if (!html || /oops/i.test(html)) {
+        cb('`word` not found', null);
+        return;
+      }
+
+      html = html.replace(/(\t|\n)+/g, '');
+
+      // Example html:
+      // "<h4>MOO</h4>to make the deep, moaning sound of a cow<p>Related Words: <strong>MOOED/MOOING/MOOS</strong></p>"
+      var word = html.match(/<h4>(.*?)<\/h4>/);
+      var definition = html.match(/<\/h4>(.*?)<p>/);
+      var related = html.match(/<strong>(.*?)<\/strong>/);
+
+      cb(null, {
+        word: word && word[1].trim(),
+        definition: definition && definition[1].trim(),
+        related: related && related[1].split('/').map(function(str) {
+          return str.trim();
+        })
+      });
+    });
 };
 
 // Get a list of similarly spelled words

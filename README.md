@@ -100,8 +100,7 @@ sowpods.anagram('EYBTOR*');
 **Returns**
  * *(String|Array)*: Some random words.
 
-If `count` is undefined, it returns a single string. Otherwise it returns an
-array of length `count` of random strings.
+If `count` is undefined, it returns a single string. Otherwise it returns an array of length `count` of random strings.
 
 ```javascript
 sowpods.random();  // -> 'PICANINNIES'
@@ -114,7 +113,7 @@ sowpods.random(2); // -> [ 'REFRESHENS', 'EPILOGUIZING' ]
  1. `search` *(String)*: The word to lookup.
  2. `callback` *(Function)*: Callback function with signature `(err, data)`.
 
-`data` is an Object with shape keys `word`, `definition`, and `related`.
+`data` is an Object with keys `word`, `definition`, and `related`.
 
 ```javascript
 sowpods.define('moo', function(err, data) {

@@ -1,5 +1,3 @@
 'use strict';
 
-var sowpods = require('./src/sowpods');
-
-module.exports = sowpods;
+module.exports = require('./src/sowpods');

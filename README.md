@@ -5,32 +5,22 @@
 ## Examples
 
 ```javascript
-// Require the module to use it
+// Require the module
 var sowpods = require('pf-sowpods');
-sowpods[62];    // 'ABAPICAL'
-sowpods.length; // 267751
+
+sowpods[62];    // -> 'ABAPICAL'
+sowpods.length; // -> 267751
 
 // A trie structure is included, too
-sowpods.trie.H.A.P.H.T.A.R.A._; // true
-
-var _ = require('lodash');
-_.get(sowpods.trie, 'DERMI'.split());
-// {
-//   C: { _: true },
-//   S: { _: true,
-//     E: { S: { _: true } }
-//   }
-// }
+sowpods.trie.H.A.P.H.T.A.R.A._; // -> true
 
 // Verify words
-sowpods.verify('banana'); // true
-sowpods.verify('foobar'); // false
+sowpods.verify('banana'); // -> true
+sowpods.verify('foobar'); // -> false
 
 // Define words / get related word forms
 sowpods.define('moo', function(err, data) {
-  if (!err) {
-    console.log(data);
-  }
+  console.log(data);
 });
 // {
 //   word: 'MOO',
@@ -38,64 +28,101 @@ sowpods.define('moo', function(err, data) {
 //   related: [ 'MOOED', 'MOOING', 'MOOS' ]
 // }
 
-// Suggest words
-sowpods.suggest('puth');
-// {TODO}
-
 // Find anagrams out of letters
-sowpods.anagram('EYBTOR*'); // [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
-// Get all 2-letter words
-sowpods.anagram('**')       // [ 'AA', 'AB', ..., 'ZA', 'ZO' ]
-
-// Get random words
-sowpods.random();  // 'PICANINNIES'
-sowpods.random(2); // ['REFRESHENS', 'EPILOGUIZING']
-
-// Get all 5-letter words
-sowpods.filter(function(word) {
-  return word.length === 5;
-});
-
-// Get all words with 'Q'
-sowpods.filter(function(word) {
-  return word.indexOf('Q') !== -1;
-});
+sowpods.anagram('EYBTOR*');
+// -> [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
 ```
 
 ## API
 
-### sowpods (Array)
+### `sowpods`
 
-An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
-
-### sowpods.trie (Object)
-
-A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word. Lodash's `get()` function may be useful here
+*({Array})*: An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
 
 ```javascript
 var _ = require('lodash');
-var subTrie = _.get(sowpods.trie, 'A.B.C.D', {});
+_.filter(sowpods, {length: 5});
+// -> [ 'AAHED', 'AALII', ..., 'ZYMES', 'ZYMIC' ]
 ```
 
-### sowpods.verify(word)
+### `sowpods.trie`
 
- * **word** (String) - A word to check (case-insensitive)
- * **returns** (Boolean) - `true` if the word is in SOWPODS
+*({Object})*: A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word. Lodash's `get()` function may be useful here.
+
+```javascript
+var _ = require('lodash');
+_.get(sowpods.trie, 'A.B.C.D', {});
+// -> {}
+_.get(sowpods.trie, 'DERMI'.split());
+// -> {
+//   C: { _: true },
+//   S: { _: true,
+//     E: { S: { _: true } }
+//   }
+// }
+```
+
+### `sowpods.verify(word)`
+
+**Arguments**
+ 1. `word` *(String)*: A word to check (case-insensitive).
+
+**Returns**
+ * *(Boolean)*: `true` if the word is in SOWPODS, `false` otherwise.
 
 This function crawls the trie to determine if the word exists.
 
-### sowpods.anagram(str)
+```javascript
+sowpods.verify('banana'); // -> true
+sowpods.verify('foobar'); // -> false
+```
 
- * **str** (String) - The letters to anagram (case-insensitive)
- * **returns** (Array) - All possible single word anagrams
+### `sowpods.anagram(str)`
 
-`str` may contain `*` or `?` which both indicate a wildcard.
+**Arguments**
+ 1. `str` *(String)*: The letters to anagram (case-insensitive).
 
-This function recursively permutes the string while crawling the trie to determine if the current permutation is valid or is a word. Please note that using many wildcards will heavily slow down the algorithm.
+**Returns**
+ * *(Array)*: All possible single word anagrams.
 
-### sowpods.random(count)
+Characters in `str` which are not alphabetic, are considered to be wildcards. This function crawls the trie as long as the next node is available in the letters provided.
 
- * **count** (Number) - *Optional*. The number of random words to return
- * **returns** (String, Array) - Some random words
+```javascript
+sowpods.anagram('EYBTOR*');
+// -> [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
+```
 
-If `count` is undefined, it returns a single string. Otherwise it returns an array of length `count` of random strings.
+### `sowpods.random([count])`
+
+**Arguments**
+ 1. `[count]` *(number)*: The number of random words to return.
+
+**Returns**
+ * *(String|Array)*: Some random words.
+
+If `count` is undefined, it returns a single string. Otherwise it returns an
+array of length `count` of random strings.
+
+```javascript
+sowpods.random();  // -> 'PICANINNIES'
+sowpods.random(2); // -> [ 'REFRESHENS', 'EPILOGUIZING' ]
+```
+
+### `sowpods.define(search, callback)`
+
+**Arguments**
+ 1. `search` *(String)*: The word to lookup.
+ 2. `callback` *(Function)*: Callback function with signature `(err, data)`.
+
+`data` is an Object with shape keys `word`, `definition`, and `related`.
+
+```javascript
+sowpods.define('moo', function(err, data) {
+  console.log(data);
+});
+// {
+//   word: 'MOO',
+//   definition: 'to make the deep, moaning sound of a cow',
+//   related: [ 'MOOED', 'MOOING', 'MOOS' ]
+// }
+```

@@ -1,3 +1,6 @@
 {
-  "extends": "pf"
+  "extends": "pf",
+  "env": {
+    "node": true
+  }
 }

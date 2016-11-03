@@ -1,3 +1,6 @@
-'use strict';
+const sowpods = require('./src/sowpods');
 
-module.exports = require('./src/sowpods');
+sowpods.anagram = require('./src/anagram');
+sowpods.define = require('./src/define');
+
+module.exports = sowpods;

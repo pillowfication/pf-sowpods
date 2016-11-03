@@ -6,7 +6,7 @@
 
 ```javascript
 // Require the module
-var sowpods = require('pf-sowpods');
+const sowpods = require('pf-sowpods');
 
 sowpods[62];    // -> 'ABAPICAL'
 sowpods.length; // -> 267751
@@ -15,45 +15,49 @@ sowpods.length; // -> 267751
 sowpods.trie.H.A.P.H.T.A.R.A._; // -> true
 
 // Verify words
-sowpods.verify('banana'); // -> true
-sowpods.verify('foobar'); // -> false
+sowpods.verify('banana');  // -> true
+sowpods.verify('asdfjkl'); // -> false
 
 // Define words / get related word forms
-sowpods.define('moo', function(err, data) {
+sowpods.define('moo', (err, data) => {
   console.log(data);
 });
-// {
-//   word: 'MOO',
+// { word: 'MOO',
 //   definition: 'to make the deep, moaning sound of a cow',
-//   related: [ 'MOOED', 'MOOING', 'MOOS' ]
-// }
+//   related: [ 'MOOED', 'MOOING', 'MOOS' ] }
 
 // Find anagrams out of letters
-sowpods.anagram('EYBTOR*');
-// -> [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
+sowpods.anagram('BCKRTO*');
+// -> [ 'AB', 'ABO', 'ABORT', ..., 'YOK', 'YORK', 'ZO' ]
 ```
 
 ## API
+
+You can require the whole modules, or just pieces of it.
+```javascript
+require('pf-sowpods');                // Everything
+require('pf-sowpods/src/dictionary'); // Just the array of SOWPODS words
+require('pf-sowpods/src/sowpods');    // The dictionary and a few core features
+```
 
 ### `sowpods`
 
 *({Array})*: An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
 
 ```javascript
-var _ = require('lodash');
-_.filter(sowpods, {length: 5});
+sowpods.filter((word) => word.length === 5);
 // -> [ 'AAHED', 'AALII', ..., 'ZYMES', 'ZYMIC' ]
 ```
 
 ### `sowpods.trie`
 
-*({Object})*: A trie structure of the words where the nodes are single capitalized characters. The node `._ === true` indicates an End-of-word. Lodash's `get()` function may be useful here.
+*({Object})*: A trie structure of the words where the nodes are single capitalized characters. The node `<path>._ === true` indicates an End-of-Word. Lodash's `_.get()` function may be useful here.
 
 ```javascript
-var _ = require('lodash');
+const _ = require('lodash');
 _.get(sowpods.trie, 'A.B.C.D', {});
 // -> {}
-_.get(sowpods.trie, 'DERMI'.split());
+_.get(sowpods.trie, 'DERMI'.split(''));
 // -> {
 //   C: { _: true },
 //   S: { _: true,
@@ -77,10 +81,10 @@ sowpods.verify('banana'); // -> true
 sowpods.verify('foobar'); // -> false
 ```
 
-### `sowpods.anagram(str)`
+### `sowpods.anagram(chars)`
 
 **Arguments**
- 1. `str` *(String)*: The letters to anagram (case-insensitive).
+ 1. `chars` *(String)*: The letters to anagram (case-insensitive).
 
 **Returns**
  * *(Array)*: All possible single word anagrams.
@@ -116,12 +120,35 @@ sowpods.random(2); // -> [ 'REFRESHENS', 'EPILOGUIZING' ]
 `data` is an Object with keys `word`, `definition`, and `related`.
 
 ```javascript
-sowpods.define('moo', function(err, data) {
+sowpods.define('moo', (err, data) => {
   console.log(data);
 });
-// {
-//   word: 'MOO',
+// { word: 'MOO',
 //   definition: 'to make the deep, moaning sound of a cow',
-//   related: [ 'MOOED', 'MOOING', 'MOOS' ]
-// }
+//   related: [ 'MOOED', 'MOOING', 'MOOS' ] }
+```
+
+This function uses [Scrabble's online dictionary](http://scrabble.hasbro.com/en-us/tools#dictionary). However, many words in SOWPODS are not defined there.
+
+```javascript
+sowpods.define('supergrass', (err) => { console.log(err); });
+// `supergrass` not found
+```
+
+The online dictionary will also defer many definitions to [Merriam-Webster](http://www.merriam-webster.com/).
+
+```javascript
+sowpods.define('acetylenic', (err, data) => { console.log(data); });
+// { word: 'ACETYLENIC',
+//   definition: null,
+//   related: null }
+```
+
+Finally, some words were not given definitions.
+
+```javascript
+sowpods.define('redone', (err, data) => { console.log(data); });
+// { word: 'REDONE',
+//   definition: '',
+//   related: [ 'REDO', 'REDID', 'REDOING', 'REDOES' ] }
 ```

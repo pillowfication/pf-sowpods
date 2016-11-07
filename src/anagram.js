@@ -5,9 +5,9 @@ const EOW = sowpods.trie.EOW;
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 module.exports = function anagram(chars) {
-  let results = [];
-  let bank = chars.toUpperCase().split('');
-  let wildcards = _.remove(bank, (char) => !_.includes(ALPHABET, char)).length;
+  const results = [];
+  const bank = chars.toUpperCase().split('');
+  const wildcards = _.remove(bank, (char) => !_.includes(ALPHABET, char)).length;
 
   (function check(bank, wildcards, trieNode, path) {
     Object.keys(trieNode).forEach((node) => {

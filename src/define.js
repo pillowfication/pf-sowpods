@@ -14,19 +14,19 @@ module.exports = function define(search, callback) {
       if (err)
         return setImmediate(callback, err);
 
-      let html = cheerio.load(res.text)('.word-definition').html();
+      const html = cheerio.load(res.text)('.word-definition').html();
 
       // If not a valid Scrabble word, OOPS! is returned
       if (!html || /oops!/i.test(html))
         return setImmediate(callback, `\`${search.toLowerCase()}\` not found`);
 
-      html = html.replace(/(\t|\n)+/g, '');
+      const condensed = html.replace(/(\t|\n)+/g, '');
 
       // Example html:
       // "<h4>MOO</h4>to make the deep, moaning sound of a cow<p>Related Words: <strong>MOOED/MOOING/MOOS</strong></p>"
-      let word = html.match(/<h4>(.*?)<\/h4>/)
-        , definition = html.match(/<\/h4>(.*?)<p>/)
-        , related = html.match(/<strong>(.*?)<\/strong>/);
+      const word = condensed.match(/<h4>(.*?)<\/h4>/);
+      const definition = condensed.match(/<\/h4>(.*?)<p>/);
+      const related = condensed.match(/<strong>(.*?)<\/strong>/);
 
       setImmediate(callback, null, {
         word: word && word[1].trim(),

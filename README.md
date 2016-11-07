@@ -82,7 +82,7 @@ This function crawls the trie to determine if the word exists.
 
 ```javascript
 sowpods.verify('banana'); // -> true
-sowpods.verify('foobar'); // -> false
+sowpods.verify('asdfjkl'); // -> false
 ```
 
 ### `sowpods.anagram(chars)`

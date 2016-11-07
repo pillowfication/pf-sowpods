@@ -29,11 +29,15 @@ sowpods.define('moo', (err, data) => {
 // Find anagrams out of letters
 sowpods.anagram('BCKRTO*');
 // -> [ 'AB', 'ABO', 'ABORT', ..., 'YOK', 'YORK', 'ZO' ]
+
+// Get similarly spelled words
+sowpods.suggest('pillowy');
+// -> [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
 ```
 
 ## API
 
-You can require the whole modules, or just pieces of it.
+You can require the whole module, or just pieces of it.
 ```javascript
 require('pf-sowpods');                // Everything
 require('pf-sowpods/src/dictionary'); // Just the array of SOWPODS words
@@ -89,7 +93,7 @@ sowpods.verify('foobar'); // -> false
 **Returns**
  * *(Array)*: All possible single word anagrams.
 
-Characters in `str` which are not alphabetic, are considered to be wildcards. This function crawls the trie as long as the next node is available in the letters provided.
+Characters in `chars` which are not alphabetic, are considered to be wildcards. This function crawls the trie as long as the next node is available in the letters provided.
 
 ```javascript
 sowpods.anagram('EYBTOR*');
@@ -151,4 +155,20 @@ sowpods.define('redone', (err, data) => { console.log(data); });
 // { word: 'REDONE',
 //   definition: '',
 //   related: [ 'REDO', 'REDID', 'REDOING', 'REDOES' ] }
+```
+
+### `sowpods.suggest(string, [distance = 2])`
+
+**Arguments**
+ 1. `strings` *(String)*: The string to query (case-insensitive).
+ 2. `[distance = 2]` *(number)*: The maximum distance to search for.
+
+**Returns**
+ * *(Array)*: All SOWPODS words whose [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) from `string` is no more than `distance`.
+
+```javascript
+sowpods.suggest('pillowy');
+// -> [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
+sowpods.suggest('catfish', 1);
+// -> [ 'BATFISH', 'CATFISH', 'CATTISH', 'RATFISH' ]
 ```

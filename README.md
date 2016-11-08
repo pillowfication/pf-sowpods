@@ -160,7 +160,7 @@ sowpods.define('redone', (err, data) => { console.log(data); });
 ### `sowpods.suggest(string, [distance = 2])`
 
 **Arguments**
- 1. `strings` *(String)*: The string to query (case-insensitive).
+ 1. `string` *(String)*: The string to query (case-insensitive).
  2. `[distance = 2]` *(number)*: The maximum distance to search for.
 
 **Returns**

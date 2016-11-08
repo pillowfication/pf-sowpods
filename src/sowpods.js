@@ -7,7 +7,7 @@ module.exports = dictionary;
 const trie = {};
 const EOW = '_';
 
-for (let word of dictionary)
+for (const word of dictionary)
   _.set(trie, (word + EOW).split(''), true);
 
 module.exports.trie = trie;

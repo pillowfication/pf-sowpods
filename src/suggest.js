@@ -38,7 +38,7 @@ module.exports = function suggest(string, distance = 2) {
   }
 
   (function check(trieNode, currColumn, col, path) {
-    for (let node of Object.keys(trieNode)) {
+    for (const node of Object.keys(trieNode)) {
       if (node === EOW && currColumn[baseLength-1] <= distance)
         results.push(path);
       else {

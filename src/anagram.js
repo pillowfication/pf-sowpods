@@ -10,13 +10,13 @@ module.exports = function anagram(chars) {
   const wildcards = _.remove(bank, (char) => !_.includes(ALPHABET, char)).length;
 
   (function check(bank, wildcards, trieNode, path) {
-    for (let node of Object.keys(trieNode)) {
+    for (const node of Object.keys(trieNode)) {
       if (node === EOW)
         results.push(path);
       else {
-        let index = bank.indexOf(node);
+        const index = bank.indexOf(node);
         if (index !== -1) {
-          let _bank = bank.slice();
+          const _bank = bank.slice();
           _bank.splice(index, 1);
           check(_bank, wildcards, trieNode[node], path + node);
         } else if (wildcards) {

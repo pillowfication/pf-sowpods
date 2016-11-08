@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const sowpods = require('./sowpods');
-const EOW = sowpods.trie.EOW;
+const EOW = sowpods.trieEOW;
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -10,7 +10,7 @@ module.exports = function anagram(chars) {
   const wildcards = _.remove(bank, (char) => !_.includes(ALPHABET, char)).length;
 
   (function check(bank, wildcards, trieNode, path) {
-    Object.keys(trieNode).forEach((node) => {
+    for (let node of Object.keys(trieNode)) {
       if (node === EOW)
         results.push(path);
       else {
@@ -23,7 +23,7 @@ module.exports = function anagram(chars) {
           check(bank, wildcards-1, trieNode[node], path + node);
         }
       }
-    });
+    }
   })(bank, wildcards, sowpods.trie, '');
 
   return _.sortBy(results);

@@ -1,45 +1,53 @@
+const _ = require('lodash');
 const sowpods = require('./sowpods');
-
-// TODO: optimize on trie to avoid repeated distance calculations
+const EOW = sowpods.trieEOW;
 
 module.exports = function suggest(string, distance = 2) {
   string = string.toUpperCase();
   const baseLength = string.length;
-  const result = [];
+  const results = [];
 
-  loop: for (let word of sowpods) {
-    const targetLength = word.length;
+  const initColumn = [];
+  for (let i = 0; i < baseLength; ++i)
+    initColumn.push(i+1);
 
-    if (Math.abs(baseLength-targetLength) > distance)
-      continue;
+  function getNextColumn(currColumn, col, node) {
+    const nextColumn = [];
+    let above = col+1;
+    let diag = col;
+    let minDist = -1;
 
-    let prevColumn = [];
-    let currColumn = [];
+    for (let row = 0; row < baseLength; ++row) {
+      const cost = node === string[row] ? 0 : 1;
+      const left = currColumn[row];
+      const currDist = Math.min(
+        above + 1,   // Deletion
+        left + 1,    // Insertion
+        diag + cost  // Substitution
+      );
 
-    for (let col = 0; col < targetLength; ++col) {
-      let minDist = -1;
-      for (let row = 0; row < baseLength; ++row) {
-        const cost = string[row] === word[col] ? 0 : 1;
-        const above = (row === 0 ? col+1 : currColumn[row-1]) + 1;
-        const left = (col === 0 ? row+1 : prevColumn[row]) + 1;
-        const diag = (row === 0 ? col : (col === 0 ? row : prevColumn[row-1])) + cost;
+      above = currDist;
+      diag = left;
+      nextColumn[row] = currDist;
 
-        const currDist = Math.min(above, left, diag);
-        if (minDist === -1 || currDist < minDist)
-          minDist = currDist;
-        currColumn[row] = currDist;
-      }
-
-      if (minDist > distance)
-        continue loop;
-
-      [prevColumn, currColumn] = [currColumn, prevColumn];
+      if (minDist === -1 || currDist < minDist)
+        minDist = currDist;
     }
 
-    const dist = prevColumn[baseLength-1];
-    if (dist <= distance)
-      result.push(word);
+    return minDist > distance ? undefined : nextColumn;
   }
 
-  return result;
+  (function check(trieNode, currColumn, col, path) {
+    for (let node of Object.keys(trieNode)) {
+      if (node === EOW && currColumn[baseLength-1] <= distance)
+        results.push(path);
+      else {
+        const nextColumn = getNextColumn(currColumn, col, node);
+        if (nextColumn)
+          check(trieNode[node], nextColumn, col+1, path+node);
+      }
+    }
+  })(sowpods.trie, initColumn, 0, '');
+
+  return _.sortBy(results);
 };

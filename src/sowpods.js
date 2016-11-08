@@ -6,12 +6,12 @@ module.exports = dictionary;
 // Create a trie out of dictionary
 const trie = {};
 const EOW = '_';
-trie.EOW = EOW;
 
 for (let word of dictionary)
   _.set(trie, (word + EOW).split(''), true);
 
 module.exports.trie = trie;
+module.exports.trieEOW = EOW;
 
 // Core features
 module.exports.verify = function verify(word) {

@@ -1,30 +1,40 @@
-const _ = require('lodash');
-const sowpods = require('./sowpods');
-const EOW = sowpods.trieEOW;
+const trie = require('./trie')
+const isLetter = String.prototype.includes.bind('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+module.exports = function anagram (chars) {
+  if (typeof chars !== 'string') {
+    return []
+  }
 
-module.exports = function anagram(chars) {
-  const results = [];
-  const bank = chars.toUpperCase().split('');
-  const wildcards = _.remove(bank, (char) => !_.includes(ALPHABET, char)).length;
+  const results = []
+  const bank = []
+  let wildcards = 0
 
-  (function check(bank, wildcards, trieNode, path) {
-    for (const node of Object.keys(trieNode)) {
-      if (node === EOW)
-        results.push(path);
-      else {
-        const index = bank.indexOf(node);
+  for (const char of chars.toUpperCase()) {
+    if (isLetter(char)) {
+      bank.push(char)
+    } else {
+      ++wildcards
+    }
+  }
+
+  function check (bank, wildcards, node, path) {
+    for (const subNode in node) {
+      if (subNode === '_') {
+        results.push(path)
+      } else {
+        const index = bank.indexOf(subNode)
         if (index !== -1) {
-          const _bank = bank.slice();
-          _bank.splice(index, 1);
-          check(_bank, wildcards, trieNode[node], path + node);
+          const _bank = bank.slice()
+          _bank.splice(index, 1)
+          check(_bank, wildcards, node[subNode], path + subNode)
         } else if (wildcards) {
-          check(bank, wildcards-1, trieNode[node], path + node);
+          check(bank, wildcards - 1, node[subNode], path + subNode)
         }
       }
     }
-  })(bank, wildcards, sowpods.trie, '');
+  }
 
-  return _.sortBy(results);
-};
+  check(bank, wildcards, trie, '')
+  return results.sort()
+}

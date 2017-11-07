@@ -17,13 +17,12 @@
   },
   "main": "index.js",
   "dependencies": {
-    "cheerio": "^0.22.0",
-    "lodash": "^4.16.4",
-    "superagent": "^2.3.0"
+    "cheerio": "^1.0.0-rc.2",
+    "superagent": "^3.6.0"
   },
   "devDependencies": {
-    "eslint": "^3.9.1",
-    "eslint-config-pf": "1.0.6"
+    "eslint": "^3.19.0",
+    "standard": "^10.0.3"
   },
   "keywords": [
     "dictionary",

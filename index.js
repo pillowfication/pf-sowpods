@@ -1,7 +1,7 @@
-const sowpods = require('./src/sowpods');
+const sowpods = require('./src/sowpods')
+module.exports = sowpods
 
-sowpods.anagram = require('./src/anagram');
-sowpods.define = require('./src/define');
-sowpods.suggest = require('./src/suggest');
-
-module.exports = sowpods;
+// Extra features
+sowpods.anagram = require('./src/anagram')
+// sowpods.define = require('./src/define')
+sowpods.suggest = require('./src/suggest')

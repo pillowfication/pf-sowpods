@@ -16,10 +16,6 @@
     "url": "https://github.com/pillowfication/pf-sowpods/issues"
   },
   "main": "index.js",
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "superagent": "^3.6.0"
-  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "standard": "^10.0.3"

@@ -1,27 +1,48 @@
+// TODO: This file doesn't work
+
 const request = require('superagent')
 const cheerio = require('cheerio')
 
 module.exports = function define (word, callback) {
-  if (!/^[a-z]+$/i.test(word)) {
-    return setImmediate(callback, new Error(`\`${word}\` must be an alphabetic string`))
+  if (typeof word !== 'string' || !/^[a-z]+$/i.test(word)) {
+    return setImmediate(callback, new Error(`\`word\` (${word}) must be an alphabetic string`))
   }
 
+  // request
+  // request({
+  //   method: 'POST',
+  //   url: 'http://scrabble.hasbro.com/en-us/tools#dictionary',
+  //   form: { dictWord: word.toLowerCase() }
+  // }, (error, response, body) => {
+  //   // Shows up as POST
+  //   console.log(response.req._header)
+  // })
+
+  // superagent
   request
-    .post('http://scrabble.hasbro.com/en-us/tools#dictionary')
+    .post('http://scrabble.hasbro.com/en-us/tools')
     .type('form')
     .send({ dictWord: word.toLowerCase() })
     .end(function (error, response) {
+      // Shows up as GET
+      console.log(response.req._header)
+
       if (error) {
-        return setImmediate(callback, error)
+        return callback(error)
       }
 
       const $ = cheerio.load(response.text)
       const element = $('.word-definition').html()
 
-      // If not a valid Scrabble word, OOPS! is returned
-      if (!element || /oops!/i.test(element)) {
-        console.log(response.text)
-        return setImmediate(callback, `\`${word.toLowerCase()}\` not found`)
+      // This should never happen :(
+      // It means that we POSTed incorrectly
+      if (!element) {
+        return callback(new Error('Request did not go through'))
+      }
+
+      // If not a valid Scrabble word, "OOPS!" is returned
+      if (/oops!/i.test(element)) {
+        return callback(new Error(`\`${word.toLowerCase()}\` not found`))
       }
 
       const condensed = element.replace(/[\t\n]+/g, '')

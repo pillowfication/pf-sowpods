@@ -18,14 +18,6 @@ sowpods.trie.H.A.P.H.T.A.R.A._ // -> true
 sowpods.verify('banana')  // -> true
 sowpods.verify('asdfjkl') // -> false
 
-// Define words / get related word forms
-sowpods.define('moo', (error, data) => {
-  console.log(data)
-})
-// { word: 'MOO',
-//   definition: 'to make the deep, moaning sound of a cow',
-//   related: [ 'MOOED', 'MOOING', 'MOOS' ] }
-
 // Find anagrams out of letters
 sowpods.anagram('BCKRTO*')
 // -> [ 'AB', 'ABO', 'ABORT', ..., 'YOK', 'YORK', 'ZO' ]
@@ -54,7 +46,7 @@ index
  │   └───── trie ─┴─ dictionary
  ├─ anagram ─┤
  ├─ suggest ─┘
- └─ define
+ └─ (define)
      ├─ cheerio
      └─ superagent
 ```
@@ -140,8 +132,10 @@ sowpods.random(2) // -> [ 'REFRESHENS', 'EPILOGUIZING' ]
 
 ```javascript
 sowpods.define('moo', (error, data) => {
+  console.log(error)
   console.log(data)
 })
+// null
 // { word: 'MOO',
 //   definition: 'to make the deep, moaning sound of a cow',
 //   related: [ 'MOOED', 'MOOING', 'MOOS' ] }

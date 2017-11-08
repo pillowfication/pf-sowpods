@@ -16,6 +16,9 @@
     "url": "https://github.com/pillowfication/pf-sowpods/issues"
   },
   "main": "index.js",
+  "scripts": {
+    "test": "node_modules/standard/bin/cmd.js"
+  },
   "devDependencies": {
     "eslint": "^3.19.0",
     "standard": "^10.0.3"

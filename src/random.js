@@ -11,7 +11,7 @@ module.exports = function random (count) {
     indices[i] = i
   }
 
-  // Fisher-Yates
+  // Fisher-Yates on just indices, stopping early
   count = Math.min(count, indices.length)
   for (let i = 0; i < count; ++i) {
     const index = Math.random() * (indices.length - i) | 0
@@ -19,6 +19,7 @@ module.exports = function random (count) {
     ;[ indices[i], indices[swap] ] = [ indices[swap], indices[i] ]
   }
 
+  // Map the first `count` indices to corresponding words
   const results = []
   for (let i = 0; i < count; ++i) {
     results[i] = dictionary[indices[i]]

@@ -1,5 +1,7 @@
 const trie = require('./trie')
 
+// A variant of the Wagner-Fischer algorithm is implemented here.
+// https://en.wikipedia.org/wiki/Wagner%E2%80%93Fischer_algorithm
 module.exports = function suggest (string, distance = 2) {
   if (typeof string !== 'string') {
     return []

@@ -6,6 +6,7 @@ module.exports = function anagram (chars) {
     return []
   }
 
+  // Filter for only the letters, and count everything else as a wildcard
   const results = []
   const bank = []
   let wildcards = 0
@@ -20,15 +21,18 @@ module.exports = function anagram (chars) {
 
   function check (bank, wildcards, node, path) {
     for (const subNode in node) {
+      // If the current path reached an EOW, then an anagram was found
       if (subNode === '_') {
         results.push(path)
+
+      // Otherwise, try to keep walking down nodes
       } else {
         const index = bank.indexOf(subNode)
-        if (index !== -1) {
+        if (index !== -1) {          // First check if the letter was in `bank`
           const _bank = bank.slice()
           _bank.splice(index, 1)
           check(_bank, wildcards, node[subNode], path + subNode)
-        } else if (wildcards) {
+        } else if (wildcards) {      // Then see if any wildcards remain
           check(bank, wildcards - 1, node[subNode], path + subNode)
         }
       }

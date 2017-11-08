@@ -8,28 +8,29 @@
 // Require the module
 const sowpods = require('pf-sowpods')
 
-sowpods[62]    // -> 'ABAPICAL'
-sowpods.length // -> 267751
+sowpods[62]    // 'ABAPICAL'
+sowpods.length // 267751
 
 // A trie structure is included, too
-sowpods.trie.H.A.P.H.T.A.R.A._ // -> true
+sowpods.trie.H.A.P.H.T.A.R.A._ // true
 
 // Verify words
-sowpods.verify('banana')  // -> true
-sowpods.verify('asdfjkl') // -> false
+sowpods.verify('banana')  // true
+sowpods.verify('asdfjkl') // false
 
 // Find anagrams out of letters
 sowpods.anagram('BCKRTO*')
-// -> [ 'AB', 'ABO', 'ABORT', ..., 'YOK', 'YORK', 'ZO' ]
+// [ 'AB', 'ABO', 'ABORT', ..., 'YOK', 'YORK', 'ZO' ]
 
 // Get similarly spelled words
 sowpods.suggest('pillowy')
-// -> [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
+// [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
 ```
 
 ## API
 
 You can require the whole module, or just pieces of it.
+
 ```javascript
 require('pf-sowpods')                // Everything
 require('pf-sowpods/src/dictionary') // Just the array of SOWPODS words
@@ -37,6 +38,7 @@ require('pf-sowpods/src/sowpods')    // The dictionary and a few core features
 ```
 
 Dependency graph (left to right):
+
 ```
 index
  ├─ sowpods ──────┐
@@ -56,8 +58,8 @@ index
 *({Array})*: An alphabetized array of the SOWPODS dictionary. All letters are capitalized.
 
 ```javascript
-sowpods.filter((word) => word.length === 5)
-// -> [ 'AAHED', 'AALII', ..., 'ZYMES', 'ZYMIC' ]
+sowpods.filter(word => word.length === 5)
+// [ 'AAHED', 'AALII', ..., 'ZYMES', 'ZYMIC' ]
 ```
 
 ### `sowpods.trie`
@@ -67,9 +69,9 @@ sowpods.filter((word) => word.length === 5)
 ```javascript
 const _ = require('lodash')
 _.get(sowpods.trie, 'A.B.C.D.E.F')
-// -> undefined
+// undefined
 _.get(sowpods.trie, 'DERMI'.split(''))
-// -> {
+// {
 //   C: { _: true },
 //   S: { _: true,
 //     E: { S: { _: true } }
@@ -88,8 +90,8 @@ _.get(sowpods.trie, 'DERMI'.split(''))
 This function crawls the trie to determine if the word exists.
 
 ```javascript
-sowpods.verify('banana') // -> true
-sowpods.verify('asdfjkl') // -> false
+sowpods.verify('banana')  // true
+sowpods.verify('asdfjkl') // false
 ```
 
 ### `sowpods.anagram(chars)`
@@ -104,7 +106,7 @@ Characters in `chars` which are not alphabetic, are considered to be wildcards. 
 
 ```javascript
 sowpods.anagram('EYBTOR*')
-// -> [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
+// [ 'BOOTERY', 'BARYTE', ..., 'YU', 'ZO' ]
 ```
 
 ### `sowpods.random([count])`
@@ -118,52 +120,9 @@ sowpods.anagram('EYBTOR*')
 If `count` is `undefined`, it returns a single string. Otherwise it returns an array of length `count` of random words.
 
 ```javascript
-sowpods.random() // -> 'PICANINNIES'
-sowpods.random(2) // -> [ 'REFRESHENS', 'EPILOGUIZING' ]
-```
-
-### `sowpods.define(word, callback)`
-
-**Arguments**
- 1. `word` *(String)*: The word to lookup.
- 2. `callback` *(Function)*: Callback function with signature `(error, data)`.
-
-`data` is an Object with keys `word`, `definition`, and `related`.
-
-```javascript
-sowpods.define('moo', (error, data) => {
-  console.log(error)
-  console.log(data)
-})
-// null
-// { word: 'MOO',
-//   definition: 'to make the deep, moaning sound of a cow',
-//   related: [ 'MOOED', 'MOOING', 'MOOS' ] }
-```
-
-This function uses [Scrabble's online dictionary](http://scrabble.hasbro.com/en-us/tools#dictionary). However, many words in SOWPODS are not defined there.
-
-```javascript
-sowpods.define('supergrass', (error, _) => { console.log(error) })
-// `supergrass` not found
-```
-
-The online dictionary will also defer many definitions to [Merriam-Webster](http://www.merriam-webster.com/).
-
-```javascript
-sowpods.define('acetylenic', (_, data) => { console.log(data) })
-// { word: 'ACETYLENIC',
-//   definition: null,
-//   related: null }
-```
-
-Finally, some words were not given definitions.
-
-```javascript
-sowpods.define('redone', (_, data) => { console.log(data) })
-// { word: 'REDONE',
-//   definition: '',
-//   related: [ 'REDO', 'REDID', 'REDOING', 'REDOES' ] }
+sowpods.random()  // 'PICANINNIES'
+sowpods.random(1) // [ 'IGLU' ]
+sowpods.random(2) // [ 'REFRESHENS', 'EPILOGUIZING' ]
 ```
 
 ### `sowpods.suggest(string, [distance = 2])`
@@ -177,7 +136,7 @@ sowpods.define('redone', (_, data) => { console.log(data) })
 
 ```javascript
 sowpods.suggest('pillowy')
-// -> [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
+// [ 'BILLOW', 'BILLOWS', 'MELLOWY', ..., 'WILLOWS', 'WILLOWY', 'YELLOWY' ]
 sowpods.suggest('catfish', 1)
-// -> [ 'BATFISH', 'CATFISH', 'CATTISH', 'RATFISH' ]
+// [ 'BATFISH', 'CATFISH', 'CATTISH', 'RATFISH' ]
 ```

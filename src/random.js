@@ -16,7 +16,10 @@ module.exports = function random (count) {
   for (let i = 0; i < count; ++i) {
     const index = Math.random() * (indices.length - i) | 0
     const swap = i + index
-    ;[ indices[i], indices[swap] ] = [ indices[swap], indices[i] ]
+
+    const temp = indices[i]
+    indices[i] = indices[swap]
+    indices[swap] = temp
   }
 
   // Map the first `count` indices to corresponding words

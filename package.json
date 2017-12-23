@@ -1,21 +1,21 @@
 {
   "name": "pf-sowpods",
   "version": "1.2.1",
-  "description": "Scrabble's SOWPODS dictionary",
+  "description": "Scrabble’s SOWPODS dictionary.",
+  "main": "index.js",
+  "homepage": "http://pf-n.co/github/pf-sowpods",
   "author": {
     "name": "Markus Tran",
     "email": "thebluepillow@gmail.com",
     "url": "http://pillowfication.com"
   },
-  "homepage": "https://github.com/pillowfication/pf-sowpods",
   "repository": {
     "type": "git",
-    "url": "git://github.com/pillowfication/pf-sowpods.git"
+    "url": "https://github.com/pillowfication/pf-sowpods.git"
   },
   "bugs": {
     "url": "https://github.com/pillowfication/pf-sowpods/issues"
   },
-  "main": "index.js",
   "scripts": {
     "test": "node_modules/standard/bin/cmd.js"
   },

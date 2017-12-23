@@ -1,6 +1,8 @@
 # pf-sowpods
 
-**Scrabble's SOWPODS dictionary** - The SOWPODS dictionary with related functionality.
+**Scrabble’s SOWPODS dictionary** - The SOWPODS dictionary with related functionality.
+
+http://pf-n.co/github/pf-sowpods
 
 ## Examples
 
@@ -64,7 +66,7 @@ sowpods.filter(word => word.length === 5)
 
 ### `sowpods.trie`
 
-*({Object})*: A trie structure of the words where the nodes are single capitalized characters. The node `<path>._ === true` indicates an End-of-Word. Lodash's `_.get()` function may be useful here.
+*({Object})*: A trie structure of the words where the nodes are single capitalized characters. The node `<path>._ === true` indicates an End-of-Word. Lodash’s `_.get()` function may be useful here.
 
 ```javascript
 const _ = require('lodash')

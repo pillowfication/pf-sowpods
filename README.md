@@ -114,7 +114,7 @@ sowpods.anagram('EYBTOR*')
 ### `sowpods.random([count])`
 
 **Arguments**
- 1. `[count]` *(number)*: The number of random words to return.
+ 1. `[count]` *(Number)*: The number of random words to return.
 
 **Returns**
  * *(String|Array)*: Some random words.
@@ -131,7 +131,7 @@ sowpods.random(2) // [ 'REFRESHENS', 'EPILOGUIZING' ]
 
 **Arguments**
  1. `string` *(String)*: The string to query (case-insensitive).
- 2. `[distance = 2]` *(number)*: The maximum distance to search for.
+ 2. `[distance = 2]` *(Number)*: The maximum distance to search for.
 
 **Returns**
  * *(Array)*: All SOWPODS words whose [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) from `string` is no more than `distance`.

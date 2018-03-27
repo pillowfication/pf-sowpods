@@ -2,7 +2,7 @@ const trie = require('./trie')
 
 // A variant of the Wagner-Fischer algorithm is implemented here.
 // https://en.wikipedia.org/wiki/Wagner%E2%80%93Fischer_algorithm
-module.exports = function suggest (string, distance = 2) {
+function suggest (string, distance = 2) {
   if (typeof string !== 'string') {
     return []
   }
@@ -26,9 +26,9 @@ module.exports = function suggest (string, distance = 2) {
       const cost = node === string[row] ? 0 : 1
       const left = currColumn[row]
       const currDist = Math.min(
-        above + 1,   // Deletion
-        left + 1,    // Insertion
-        diag + cost  // Substitution
+        above + 1, // Deletion
+        left + 1, // Insertion
+        diag + cost // Substitution
       )
 
       above = currDist
@@ -59,3 +59,5 @@ module.exports = function suggest (string, distance = 2) {
   check(trie, initColumn, 0, '')
   return results.sort()
 }
+
+module.exports = suggest

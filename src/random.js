@@ -1,6 +1,6 @@
 const dictionary = require('./dictionary')
 
-module.exports = function random (count) {
+function random (count) {
   if (count === undefined || typeof count !== 'number') {
     const index = Math.random() * dictionary.length | 0
     return dictionary[index]
@@ -29,3 +29,5 @@ module.exports = function random (count) {
   }
   return results
 }
+
+module.exports = random

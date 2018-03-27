@@ -1,6 +1,6 @@
 const trie = require('./trie')
 
-module.exports = function verify (word) {
+function verify (word) {
   if (typeof word !== 'string') {
     return false
   }
@@ -12,5 +12,8 @@ module.exports = function verify (word) {
       return false
     }
   }
+
   return node._ === true
 }
+
+module.exports = verify

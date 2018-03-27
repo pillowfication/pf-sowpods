@@ -1,7 +1,7 @@
 const trie = require('./trie')
 const isLetter = String.prototype.includes.bind('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-module.exports = function anagram (chars) {
+function anagram (chars) {
   if (typeof chars !== 'string') {
     return []
   }
@@ -28,11 +28,15 @@ module.exports = function anagram (chars) {
       // Otherwise, try to keep walking down nodes
       } else {
         const index = bank.indexOf(subNode)
-        if (index !== -1) {          // First check if the letter was in `bank`
+
+        // First check if the letter was in `bank`
+        if (index !== -1) {
           const _bank = bank.slice()
           _bank.splice(index, 1)
           check(_bank, wildcards, node[subNode], path + subNode)
-        } else if (wildcards) {      // Then see if any wildcards remain
+
+        // Then see if any wildcards remain
+        } else if (wildcards) {
           check(bank, wildcards - 1, node[subNode], path + subNode)
         }
       }
@@ -42,3 +46,5 @@ module.exports = function anagram (chars) {
   check(bank, wildcards, trie, '')
   return results.sort()
 }
+
+module.exports = anagram

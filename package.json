@@ -20,7 +20,7 @@
     "test": "node_modules/standard/bin/cmd.js"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "standard": "^11.0.1"
   },
   "keywords": [
     "dictionary",

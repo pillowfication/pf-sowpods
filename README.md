@@ -49,10 +49,7 @@ index
  │   │   └───┐    │
  │   └───── trie ─┴─ dictionary
  ├─ anagram ─┤
- ├─ suggest ─┘
- └─ (define)
-     ├─ cheerio
-     └─ superagent
+ └─ suggest ─┘
 ```
 
 ### `sowpods`
